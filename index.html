@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <style>
+      .axis path{
+        fill: none;
+        stroke: #777;
+        shape-rendering: crispEdges;
+      }
+
+
+
+      .grid .tick{
+        stroke: lightGrey;
+        opacity: 0.7;
+      }
+
+      .grid path{
+        stroke-width: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <svg class = "visualization" width = "1000" height = "600"></svg>
+    <script src='d3.js'></script>
+    <script>
+      var dataList = [{x:1, y:5},{x:2, y:10},{x:3, y:15},{x:4, y:20}];
+
+      var vis = d3.select(".visualization");
+      var width =   1000;
+      var height = 500;
+      var margins = {
+        top: 20,
+        right: 20,
+        bottom: 20,
+        left: 50
+      };
+      var xScale = d3.scale.linear().domain([0, 4]).range([margins.left, width - margins.right]);
+
+      var yScale = d3.scale.linear().domain([0, 20]).range([height - margins.top, margins.bottom]);
+
+      var xAxis = d3.svg.axis().scale(xScale);
+
+      var yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+      vis.append("svg:g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + (height - margins.bottom) + ")")
+      .call(xAxis);
+
+      vis.append("svg:g")
+      .attr("class", "axis")
+      .attr("transform", "translate(" + (margins.left) + ",0)")
+      .call(yAxis);
+
+      function xGrid(){
+        return d3.svg.axis()
+        .scale(xScale)
+        .orient("bottom")
+        .ticks(8)
+      }
+
+      function yGrid(){
+        return d3.svg.axis()
+        .scale(yScale)
+        .orient("left")
+        .ticks(10)
+      }
+
+      //draw grid
+      vis.append("g")
+      .attr("class", "grid")
+      .attr("transform", "translate(0," + (height - margins.bottom) + ")")
+      .call(xGrid()
+      .tickSize(-height, 0, 0)
+      .tickFormat("")
+      );
+
+        vis.append("g")
+            .attr("class", "grid")
+            .call(yGrid()
+                .tickSize(-width, 0, 0)
+                .tickFormat("")
+                );
+
+
+    </script>
+  </body>
+</html>
