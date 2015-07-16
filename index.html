@@ -1,88 +1,99 @@
 <html>
   <head>
     <style>
-      .axis path{
+      .axis path {
         fill: none;
-        stroke: #777;
         shape-rendering: crispEdges;
       }
 
+      .x.axis path{
+        stroke: red;
+      }
 
+      .y.axis path{
+        stroke: blue;
+      }
 
       .grid .tick{
         stroke: lightGrey;
         opacity: 0.7;
       }
-
+      
+      
       .grid path{
         stroke-width: 0;
       }
     </style>
   </head>
   <body>
-    <svg class = "visualization" width = "1000" height = "600"></svg>
+    <svg class = "visualization" width = "1000" height = "800"></svg>
     <script src='d3.js'></script>
     <script>
       var dataList = [{x:1, y:5},{x:2, y:10},{x:3, y:15},{x:4, y:20}];
 
-      var vis = d3.select(".visualization");
-      var width =   1000;
-      var height = 500;
+      //Set body
+      var svg = d3.select(".visualization");
+      var width =  1000;
+      var height = 600;
       var margins = {
         top: 20,
         right: 20,
         bottom: 20,
-        left: 50
+        left: 80
       };
+
+      //Scale x and y axis with body with dataList
       var xScale = d3.scale.linear().domain([0, 4]).range([margins.left, width - margins.right]);
 
       var yScale = d3.scale.linear().domain([0, 20]).range([height - margins.top, margins.bottom]);
 
-      var xAxis = d3.svg.axis().scale(xScale);
-
-      var yAxis = d3.svg.axis().scale(yScale).orient("left");
-
-      vis.append("svg:g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + (height - margins.bottom) + ")")
-      .call(xAxis);
-
-      vis.append("svg:g")
-      .attr("class", "axis")
-      .attr("transform", "translate(" + (margins.left) + ",0)")
-      .call(yAxis);
-
+      //Draw grid
       function xGrid(){
         return d3.svg.axis()
         .scale(xScale)
-        .orient("bottom")
-        .ticks(8)
+        .orient("bottom") 
+        .ticks(7)   //ticks are approximate
       }
 
       function yGrid(){
         return d3.svg.axis()
         .scale(yScale)
         .orient("left")
-        .ticks(10)
+        ticks(12)
       }
 
-      //draw grid
-      vis.append("g")
+      svg.append("g")
       .attr("class", "grid")
+      //String concatenation
       .attr("transform", "translate(0," + (height - margins.bottom) + ")")
       .call(xGrid()
-      .tickSize(-height, 0, 0)
-      .tickFormat("")
-      );
-
-        vis.append("g")
-            .attr("class", "grid")
-            .call(yGrid()
-                .tickSize(-width, 0, 0)
+                .tickSize(-height, 0)
                 .tickFormat("")
                 );
 
+        svg.append("g")
+        .attr("class", "grid")
+        .attr("transform", "translate(" + (margins.left) + ",0)")
+            .call(yGrid()
+                .tickSize(-width, 0)
+                .tickFormat("")
+                );
 
+      //Draw x and y axes
+      var xAxis = d3.svg.axis().scale(xScale).orient("bottom");   //Orients the x axis ticks below the x line. Axis turns 90 degrees to the left or right if initial orientation is left/right
+
+      var yAxis = d3.svg.axis().scale(yScale).orient("left"); //Orients the y axis ticks to the left of the y line. Axis turns 90 degrees to the left or right if initiall orientation is bottom/top
+           svg.append("svg:g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + (height - margins.bottom) + ")")
+      .attr("stroke", "red")
+      .call(xAxis);
+
+      svg.append("svg:g")
+      .attr("class", "y axis")
+      .attr("stroke", "blue")
+      .attr("transform", "translate(" + (margins.left) + ",0)")
+      .call(yAxis);
     </script>
   </body>
 </html>
