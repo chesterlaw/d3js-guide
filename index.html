@@ -4,6 +4,7 @@
       .axis path {
         fill: none;
         shape-rendering: crispEdges;
+        stroke-width:15;
       }
 
       .x.axis path{
@@ -16,6 +17,7 @@
 
       .grid .tick{
         stroke: lightGrey;
+        stroke-width:10;
         opacity: 0.7;
       }
       
@@ -26,33 +28,34 @@
     </style>
   </head>
   <body>
-    <svg class = "visualization" width = "1000" height = "800"></svg>
+    <svg class="visualization"></svg>
     <script src='d3.js'></script>
     <script>
-      var dataList = [{x:1, y:5},{x:2, y:10},{x:3, y:15},{x:4, y:20}];
-
       //Set body
-      var svg = d3.select(".visualization");
-      var width =  1000;
-      var height = 600;
+      var width = 1000;
+      var height = 500;
       var margins = {
-        top: 20,
-        right: 20,
-        bottom: 20,
-        left: 80
+        top: 10,
+        right: 10,
+        bottom: 25,
+        left: 30
       };
 
-      //Scale x and y axis with body with dataList
-      var xScale = d3.scale.linear().domain([0, 4]).range([margins.left, width - margins.right]);
+      var svg = d3.select(".visualization");
+      svg.attr('width', width);
+      svg.attr('height', height);
 
-      var yScale = d3.scale.linear().domain([0, 20]).range([height - margins.top, margins.bottom]);
+      //Scale x and y axis with body with dataList
+      var xScale = d3.scale.linear().domain([0, 13]).range([margins.left, width - margins.right]);
+
+      var yScale = d3.scale.linear().domain([0, 12]).range([height - margins.bottom, margins.top]);
 
       //Draw grid
       function xGrid(){
         return d3.svg.axis()
         .scale(xScale)
         .orient("bottom") 
-        .ticks(7)   //ticks are approximate
+        .ticks(12)   //ticks are approximate
       }
 
       function yGrid(){
