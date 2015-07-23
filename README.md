@@ -24,7 +24,7 @@ Includes...
 <svg class="visualization"></svg>
 <script src='d3.js'></script>
 ```
-* In another ```<script>``` header, create variables with a height and width to set your svg body and margins so that the graph will not get cut off.
+* In another `<script>` header, create variables with a height and width to set your svg body and margins so that the graph will not get cut off.
 
 ```
 var width = 1000;
@@ -37,7 +37,8 @@ var margins = {
         };
 ```
 
-* Create a variable with d3 selecting your svg class and setting the height and width of your svg body.
+The graph that you will be making will be in this header.
+
 
 ```
 var svg = d3.select(".visualization");
@@ -57,13 +58,16 @@ svg.attr('height', height);
 var xScale = d3.scale.linear().domain([0, 13]).range([margins.left, width - margins.right]);
 var yScale = d3.scale.linear().domain([0, 12]).range([height - margins.bottom, margins.top]);
 ```
+
+* The method linear() creates a linear scale on axes. Since the default domain and range for this method is `[0,1]`, you can change the domain and range which can fit your graph.
+
 * After Scaling the x and y axes, make variables xAxis and yAxis and set the lengths with the scale variables that were created.
 
 ```
 var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 var yAxis = d3.svg.axis().scale(yScale).orient("left");
 ```
-* `d3.svg.axis()` creates a new axis. With the attributes that are being called, the axes are able to scale and orient themselves to a specific length and position.
+* `d3.svg.axis()` means that in d3, you want svg to make a new axis. The axis can be unique and you are able to add more attributes to the axis. With the attributes that are called, the axes are able to scale and orient themselves to a specific length and position.
 
 ### <a> Appending the Axes </a>
 * After scaling and applying styles to your axes, the axes can be drawn and appended to the svg body.
@@ -79,6 +83,10 @@ svg.append("g")
 ```
 * The d3 element `<g>` is being appended with the attributes of each axis.
 * The transform attribute has a string concatenation. Instead of what is written above, you can simply just find the margin values and put them into this attribute.
+* This attribute can be simplified to `translate(x, y)` where x moves the object in the x direction and y moves the object in the y direction.
+	* the object will be moving from the left to the right in the x direction and from the top to the bottom in the y direction
+	
+**The margins are used so that the graph does not cut off by the body. By adding these margins, you are translating the axes to a specific cordinate so the axes do not get cut off.**
 
 Your graph should currently look like this.
 
@@ -123,6 +131,7 @@ svg.append("g")
 ```
 
 * The selectors in CSS are called by the *x axis path* and *y axis path*. Inside these paths, the *tick line* and color are getting changed
+
 Your graph should now look like this
 
 ![](GraphPart1.png)
@@ -231,4 +240,4 @@ The way SVG adds elements, the old elements end up in the back and the new eleme
 
 The final graph should look like this.
 
-![](GraphFinal.png)# d3js-guide
+![](GraphFinal.png)
