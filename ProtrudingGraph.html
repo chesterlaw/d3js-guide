@@ -1,0 +1,134 @@
+<html>
+  <head>
+    <style>
+
+      .axis path{
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+      
+      .x.axis .tick line{
+        stroke: orange;
+        stroke-width: 1;
+      }
+      .y.axis .tick line{
+        stroke: purple;
+        stroke-width: 1;
+      }
+      .x.grid {
+        stroke: pink;
+        stroke-width: 1;
+      }
+
+      .y.grid {
+        stroke: lightBlue;
+        stroke-width:1;
+      }
+
+    </style>
+  </head>
+  <body>
+    <svg class="visualization"></svg>
+    <script src='d3.js'></script>
+    <script>
+      var width;
+      var height;
+      var margins;
+      var svg;
+      var xScale;
+      var yScale;
+      var axisStrokeWidth = 3;
+
+      main();
+      function main() {
+        setSize();
+        setSvg();
+        setScales();
+        drawGrid();
+        drawAxes();
+     };
+
+      function setSize() {
+        width = 1000;
+        height = 500;
+        margins = {
+          top: 10,
+          right: 10,
+          bottom: 25,
+          left: 30
+        };
+      };
+
+      function setSvg(){
+        svg = d3.select(".visualization");
+        svg.attr('width', width);
+        svg.attr('height', height);
+        return svg;
+      }
+
+      //Scale x and y axis with body with dataList
+      function setScales(){
+        xScale = d3.scale.linear().domain([0, 20]).range([margins.left, width - margins.right]);
+        yScale = d3.scale.linear().domain([0, 20]).range([height - margins.bottom, margins.top]);
+      };
+
+      //Draw grid
+      function setXGrid() {
+        return d3.svg.axis()
+        .scale(xScale)
+        .orient("bottom") 
+        .ticks(20); 
+      }
+
+      function setYGrid() {
+        return d3.svg.axis()
+        .scale(yScale)
+        .orient("left")
+        .ticks(20)
+      }
+
+      function drawGrid(){
+        svg.append("g")
+        .attr("class", "x grid")
+        //String concatenation
+        .attr("transform", "translate(0," + (height - margins.bottom) + ")")
+        .call(setXGrid()
+        .tickSize(-height, 0)
+        .tickFormat(""));
+
+        svg.append("g")
+        .attr("class", "y grid")
+        .attr("transform", "translate(" + (margins.left) + ",0)")
+        .call(setYGrid()
+        .tickSize(-width, 0)
+        .tickFormat(""));
+      }      
+
+      //Draw x and y axes
+      //tickPadding(number) changes the distances between the axis and the number
+      function setXAxis(){
+        return d3.svg.axis().outerTickSize(0).ticks(20).scale(xScale).orient("bottom");
+        //Orients the x axis ticks below the x line. Axis turns 90 degrees to the left or right if initial orientation is left/right
+      }
+
+      function setYAxis(){
+        return d3.svg.axis().outerTickSize(0).ticks(20).scale(yScale).orient("left")     //Orients the y axis ticks to the left of the y line. Axis turns 90 degrees to the left or right if initiall orientation is bottom/top
+      }
+
+      function drawAxes(){
+        svg.append("g")
+        .attr("class", "x axis")
+        .style("stroke-width", axisStrokeWidth)
+        .attr("transform", "translate(0," + (height - margins.bottom) + ")")
+        .call(setXAxis());
+
+        svg.append("g")
+        .attr("class", "y axis")
+        .style("stroke-width", axisStrokeWidth)
+        .attr("transform", "translate(" + (margins.left + ",0)"))
+        .call(setYAxis());
+      } 
+    </script>
+  </body>
+</html>
