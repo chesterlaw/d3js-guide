@@ -99,7 +99,7 @@
 
         svg.append("g")
         .attr("class", "y grid")
-        .attr("transform", "translate(" + (margins.left + (axisStrokeWidth/2.0)) + "," +(1.5) + ")")
+        .attr("transform", "translate(" + (margins.left + (axisStrokeWidth/2.0)) + "," +(axisStrokeWidth/2.0) + ")")
         .call(setYGrid()
         .tickSize(-width, 0)
         .tickFormat(""));
