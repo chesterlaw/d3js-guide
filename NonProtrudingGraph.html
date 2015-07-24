@@ -2,21 +2,20 @@
   <head>
     <style>
 
-
-      .x.axis path, .x.axis .tick line {
-        stroke: red;  //this can be any color you want
-      }
-
-      .y.axis path, .y.axis .tick line {
-        stroke: blue;
-      }
-
-      .axis path {
+      .axis path{
         fill: none;
+        stroke: #000;
         shape-rendering: crispEdges;
-        stroke-width: 3;
+    }
+      
+      .x.axis .tick line{
+        stroke: orange;
+        stroke-width: 1;
       }
-
+      .y.axis .tick line{
+        stroke: purple;
+        stroke-width: 1;
+      }
       .x.grid {
         stroke: pink;
         stroke-width: 1;
@@ -37,8 +36,9 @@
       var height;
       var margins;
       var svg;
-      var xScale
-      var yScale
+      var xScale;
+      var yScale;
+      var axisStrokeWidth = 3;
 
       main();
       function main() {
@@ -99,7 +99,7 @@
 
         svg.append("g")
         .attr("class", "y grid")
-        .attr("transform", "translate(" + (margins.left) + ",0)")
+        .attr("transform", "translate(" + (margins.left + (axisStrokeWidth/2.0)) + "," +(1.5) + ")")
         .call(setYGrid()
         .tickSize(-width, 0)
         .tickFormat(""));
@@ -108,23 +108,25 @@
       //Draw x and y axes
       //tickPadding(number) changes the distances between the axis and the number
       function setXAxis(){
-        return d3.svg.axis().ticks(20).scale(xScale).orient("bottom");
+        return d3.svg.axis().outerTickSize(0).ticks(20).scale(xScale).orient("bottom");
         //Orients the x axis ticks below the x line. Axis turns 90 degrees to the left or right if initial orientation is left/right
       }
 
       function setYAxis(){
-        return d3.svg.axis().ticks(20).scale(yScale).orient("left")     //Orients the y axis ticks to the left of the y line. Axis turns 90 degrees to the left or right if initiall orientation is bottom/top
+        return d3.svg.axis().outerTickSize(0).ticks(20).scale(yScale).orient("left")     //Orients the y axis ticks to the left of the y line. Axis turns 90 degrees to the left or right if initiall orientation is bottom/top
       }
 
       function drawAxes(){
         svg.append("g")
         .attr("class", "x axis")
+        .style("stroke-width", axisStrokeWidth)
         .attr("transform", "translate(0," + (height - margins.bottom) + ")")
         .call(setXAxis());
 
         svg.append("g")
         .attr("class", "y axis")
-        .attr("transform", "translate(" + (margins.left) + ",0)")
+        .style("stroke-width", axisStrokeWidth)
+        .attr("transform", "translate(" + (margins.left + (axisStrokeWidth/2.0)) + "," +(1.5) + ")")
         .call(setYAxis());
       } 
     </script>
