@@ -1,0 +1,197 @@
+<html>
+  <head>
+    <style>
+
+      .axis path{
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+      
+      .x.axis .tick line{
+        stroke: orange;
+        stroke-width: 1;
+      }
+      .y.axis .tick line{
+        display: none;
+      }
+
+      .y.axis text{
+        display: none;
+      }
+
+      .x.grid {
+        stroke: pink;
+        stroke-width: 1;
+      }
+
+      .y.grid {
+        stroke: lightBlue;
+        stroke-width:1;
+      }
+
+    </style>
+  </head>
+  <body>
+    <svg class="visualization"></svg>
+    <script src='d3.js'></script>
+    <script>
+      var height;
+      var graphHeight = 500;
+      var margins;
+      var svg;
+      var xScale;
+      var yScale;
+      var axisStrokeWidth = 3;
+
+      main();
+      function main() {
+        setSize();
+        setSvg();
+        setScales();
+        drawGrid();
+        drawAxes();
+        setYLine();
+        drawTopLine();
+        drawRightLine();
+        removeZero();
+     };
+
+      function setSize() {
+        width = 1000;
+        height = 800;
+        margins = {
+          top: 10,
+          right: 10,
+          bottom: 25,
+          left: 30
+        };
+      };
+
+      function setSvg(){
+        svg = d3.select(".visualization");
+        svg.attr('width', width);
+        svg.attr('height', height);
+        return svg;
+      }
+
+      //Scale x and y axis with body with dataList
+      function setScales(){
+        xScale = d3.scale.linear().domain([0, 20]).range([margins.left, width - margins.right]);
+        yScale = d3.scale.linear().domain([0, 20]).range([graphHeight - margins.bottom, margins.top]);
+      };
+
+      //Draw grid
+      function setXGrid() {
+        return d3.svg.axis()
+        .scale(xScale)
+        .orient("bottom") 
+        .ticks(20); 
+      }
+
+      function setYGrid(){
+        return d3.svg.axis()
+        .scale(yScale)
+        .orient("left")
+        .ticks(20);
+      }
+
+      function drawGrid(){
+        svg.append("g")
+        .attr("class", "x grid")
+        //String concatenation
+        .attr("transform", "translate(0," + (graphHeight - margins.bottom) + ")")
+        .call(setXGrid()
+        .tickSize(-graphHeight + 35, 0)
+        .tickFormat(""));
+
+        svg.append("g")
+        .attr("class", "y grid")
+        .attr("transform", "translate(" + (margins.left) + ",0)")
+        .call(setYGrid()
+        .tickSize(-width + 42, 0)
+        .tickFormat(""));
+      }      
+
+      svg.append("path")
+      .attr("x1", 5)
+      .attr("y1", 5)
+      .attr("x2", 10)
+      .attr("y2", 5)
+      .attr("stroke-width", 10)
+      .attr("stroke", "red");
+
+      //Draw x and y axes
+      //tickPadding(number) changes the distances between the axis and the number
+      function setXAxis(){
+        return d3.svg.axis().innerTickSize(30).outerTickSize(0).ticks(20).scale(xScale).orient("bottom");
+        //Orients the x axis ticks below the x line. Axis turns 90 degrees to the left or right if initial orientation is left/right
+      }
+
+      function setYAxis(){
+        return d3.svg.axis().outerTickSize(0).ticks(20).scale(yScale).orient("left")     //Orients the y axis ticks to the left of the y line. Axis turns 90 degrees to the left or right if initiall orientation is bottom/top
+      }
+
+      function drawAxes(){
+        svg.append("g")
+        .attr("class", "x axis")
+        .style("stroke-width", axisStrokeWidth)
+        .attr("transform", "translate(0," + (graphHeight - margins.bottom) + ")")
+        .call(setXAxis());
+
+        svg.append("g")
+        .attr("class", "y axis")
+        .style("stroke-width", axisStrokeWidth)
+        .attr("transform", "translate(" + (margins.left + ",0)"))
+        .call(setYAxis());
+      } 
+
+      
+
+      function setYLine(){
+        svg.append("line")
+        .style("stroke", "black")
+        .style("stroke-width", 3)
+        .attr("x1", margins.left)
+        .attr("y1", graphHeight - margins.bottom + 45)
+        .attr("x2", margins.left)
+        .attr("y2", margins.top);
+      }
+
+      function drawTopLine(){
+        svg.append("line")
+        .style("stroke", "black")
+        .style("stroke-width", 3)
+        .attr("x1", margins.left)
+        .attr("y1", margins.top)
+        .attr("x2", width - margins.right)
+        .attr("y2", margins.top);
+      }
+
+      function drawRightLine(){
+        svg.append("line")
+        .style("stroke", "black")
+        .style("stroke-width", 3)
+        .attr("x1", width - margins.right)
+        .attr("y1", graphHeight - margins.bottom + 45)
+        .attr("x2", width - margins.right)
+        .attr("y2", margins.top);
+
+      }
+
+      function removeZero(){
+        svg.selectAll(".tick")
+        .each(function(d){
+          if (d == 0){
+            this.remove();
+          }
+
+          if (d == 20){
+            this.remove();
+          }
+        });
+      }
+
+    </script>
+  </body>
+</html>
