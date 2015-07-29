@@ -38,6 +38,8 @@
       var svg;
       var xScale;
       var yScale;
+      var xLine;
+      var yLine;
       var axisStrokeWidth = 3;
 
       main();
@@ -47,6 +49,9 @@
         setScales();
         drawGrid();
         drawAxes();
+        setXLine();
+        setYLine();
+        removeZero();
      };
 
       function setSize() {
@@ -105,6 +110,14 @@
         .tickFormat(""));
       }      
 
+      svg.append("path")
+      .attr("x1", 5)
+      .attr("y1", 5)
+      .attr("x2", 10)
+      .attr("y2", 5)
+      .attr("stroke-width", 10)
+      .attr("stroke", "red");
+
       //Draw x and y axes
       //tickPadding(number) changes the distances between the axis and the number
       function setXAxis(){
@@ -129,6 +142,36 @@
         .attr("transform", "translate(" + (margins.left + ",0)"))
         .call(setYAxis());
       } 
+
+      function setXLine(){
+        svg.append("line")
+        .style("stroke", "black")
+        .style("stroke-width", 3)
+        .attr("x1", margins.left - 200)
+        .attr("y1", height - margins.bottom)
+        .attr("x2",width - margins.right) 
+        .attr("y2", height - margins.bottom);
+      }
+
+      function setYLine(){
+        svg.append("line")
+        .style("stroke", "black")
+        .style("stroke-width", 3)
+        .attr("x1", margins.left)
+        .attr("y1", height - margins.bottom + 200)
+        .attr("x2", margins.left)
+        .attr("y2", margins.top);
+      }
+
+      function removeZero(){
+        svg.selectAll(".tick")
+        .each(function(d){
+          if (d == 0){
+            this.remove();
+          }
+        });
+      }
+
     </script>
   </body>
 </html>
