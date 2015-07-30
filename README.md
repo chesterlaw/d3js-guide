@@ -164,7 +164,7 @@ If you set them to 0, it will look like this.
 Keep in mind that there are still tick marks on the end of each axis. These tick marks are on each number.
 
 
-*If you think that the numbers are too close to the tick marks, the `tickPadding()` method can be very useful to you. You can use this method when setting your x and y axes.
+* If you think that the numbers are too close to the tick marks, the `tickPadding()` method can be very useful to you. You can use this method when setting your x and y axes.
 
 ```
 var xAxis = d3.svg.axis().ticks(12).outerTickSize(0).scale(xScale).orient("bottom").tickPadding(10);
@@ -275,4 +275,4 @@ The final graph should look like this.
 
 ![](GraphFinal.png)
 
-If you take a look at my coding, the body where I wrote my scripts may seem a bit different. The only difference is that I made a `main()` function which held the step by step order on how the graph is made. I also added functions for each body of code so that everything is able to be called in the `main()` function. Make sure to create instance variables so that errors do not occur.
+If you take a look at my code under the file `index.html`, the body where I wrote my scripts may seem a bit different. The only difference is that I made a `main()` function which held the step by step order on how the graph is made. I also added functions for each body of code so that everything is able to be called in the `main()` function. Make sure to create instance variables so that errors do not occur.
