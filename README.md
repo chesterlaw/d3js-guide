@@ -8,7 +8,6 @@ Includes...
 * y axis
 * grid
 
-
 ## Downloading the Files
 
 * The code written is done through D3.Js and will require you to first go to their website [here](http://d3js.org/).
@@ -55,7 +54,7 @@ svg.attr('height', height);
 * xScales and yScales are used to set the domain (minimum and maximum values that are wished to be displayed in the axis) and the range (the values that the SVG will be covering). It is important to set your margins in your scales so that the axes and grids do not get drawn past the body.
 
 ```
-var xScale = d3.scale.linear().domain([0, 13]).range([margins.left, width - margins.right]);
+var xScale = d3.scale.linear().domain([0, 12]).range([margins.left, width - margins.right]);
 var yScale = d3.scale.linear().domain([0, 12]).range([height - margins.bottom, margins.top]);
 ```
 
@@ -64,10 +63,13 @@ var yScale = d3.scale.linear().domain([0, 12]).range([height - margins.bottom, m
 * After Scaling the x and y axes, make variables xAxis and yAxis and set the lengths with the scale variables that were created.
 
 ```
-var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
-var yAxis = d3.svg.axis().scale(yScale).orient("left");
+var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(12);
+var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(12);
 ```
+
 * `d3.svg.axis()` means that in d3, you want svg to make a new axis. The axis can be unique and you are able to add more attributes to the axis. With the attributes that are called, the axes are able to scale and orient themselves to a specific length and position.
+
+**In order for the ticks to go at single increments, you will need to set both the domain from `xScale` and `yScale` equal to the specified number of ticks in `xAxis` and `yAxis`.
 
 ### <a> Appending the Axes </a>
 * After scaling and applying styles to your axes, the axes can be drawn and appended to the svg body.
@@ -114,6 +116,7 @@ The graph does not look that great and should be changed with CSS selectors.
 * `.x.axis` and `.y.axis` were made to make the path and tick line have a specific color.
 * `.axis path` is created so that the edges of the axes are not as thick and the black `fill` selector does not default to black and cover up the colored axes.
 * We'll be using different colors to differentiate the two axes
+* the shape-rendering selector only makes the rendering more crisp.
 
 ### <a> Calling the Selectors </a>
 **You will also need to change an attribute for each appending axis so the CSS selectors are called.**
@@ -130,6 +133,7 @@ svg.append("g")
             .call(yAxis);
 ```
 
+
 * The selectors in CSS are called by the *x axis path* and *y axis path*. Inside these paths, the *tick line* and color are getting changed
 
 Your graph should now look like this
@@ -145,20 +149,49 @@ The initial graph with black axes were extremely thick which covered the tick ma
 
 * Other fancy attributes can be used as well and are found in any CSS reference. You can click [here](http://www.w3schools.com/cssref/) to look at a reference from w3schools.
 
+* If you do not like the way the graph "brackets" at the end of each axis, you can call an attribute called `outerTickSize` which can change the length of the outer ticks. This attribute can be called when you are setting your x and y axis.
+	* Setting the outer ticks to `0` will get rid of them.
+
+```
+var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(12).outerTickSize(0);
+var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(12).outerTickSize(0);
+```
+
+If you set them to 0, it will look like this.
+
+![](outerTickSize.png)
+
+Keep in mind that there are still tick marks on the end of each axis. These tick marks are on each number.
+
+
+*If you think that the numbers are too close to the tick marks, the `tickPadding()` method can be very useful to you. You can use this method when setting your x and y axes.
+
+```
+var xAxis = d3.svg.axis().ticks(12).outerTickSize(0).scale(xScale).orient("bottom").tickPadding(10);
+
+var yAxis = return d3.svg.axis().ticks(12).outerTickSize(0).scale(xyScale).orient("bottom").tickPadding(10);
+```
+
+![](tickPadding.png)
+
+Compared to the picture above without `tickPadding()`, you can easily tell that it has moved further away from the tick marks.
+
+**The numbers on the x axis is cut off due to the svg body. The svg body is limiting the amount of area each object can cover. You can simply fix this by changing the height of your svg body.**
+
 
 ## Drawing the Grid
 Now that the x and y axes are done, the grid can be made. 
 
 
 ### <a> Generating the Grid Lines </a>
-* Functions are required to generate the gridlines. The function will be used to scale and orient the grid with an approximate amount of tick marks.
+* Functions are required to generate the gridlines. The function will be used to scale and orient the grid with a specific amount of tick marks.
 
 ```
 function xGrid() {
           return d3.svg.axis()
           .scale(xScale)
           .orient("bottom")
-          .ticks(12)   //ticks are approximate
+          .ticks(12)
         }
 
 function yGrid() {
@@ -241,3 +274,5 @@ The way SVG adds elements, the old elements end up in the back and the new eleme
 The final graph should look like this.
 
 ![](GraphFinal.png)
+
+If you take a look at my coding, the body where I wrote my scripts may seem a bit different. The only difference is that I made a `main()` function which held the step by step order on how the graph is made. I also added functions for each body of code so that everything is able to be called in the `main()` function. Make sure to create instance variables so that errors do not occur.
