@@ -235,10 +235,6 @@ The only new methods that have not been gone over so far are tickSize() and tick
 * When looking at how height and width work, the top left corner of the screen has the x and y coordinates set as 0. However, in SVG, when a negative value is given, SVG will draw it upside down.
 * The second argument displays the thickness of the grid axis line. If you set it to 5, you are able to see how the grid in this program works.
 
-![](HowGridWorks.png)
-
-
-
 * Since we do not want the tickFormat to change, we will be setting nothing to tickFormat.
 
 **The grid right now should not be showing since we have not created a CSS selector. Therefore it should still look the same as before.**
@@ -263,6 +259,12 @@ The only new methods that have not been gone over so far are tickSize() and tick
 * x grid and y grid have different strokes so that you are able to differentiate them. You can change the colors if you wish.
 
 *You can always make a universal class (ex. .axis.grid) instead of two different ones, but it is better this way in case you want to change a specific axis but not the other one.*
+
+The grid should currently look like this.
+
+![](HowGridWorks.png)
+
+A simple and final change can fix this and you'll be done with your first graph using d3!
 
 
 ##Final Changes
